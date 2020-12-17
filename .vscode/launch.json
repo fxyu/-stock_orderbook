@@ -1,0 +1,61 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Futu Main",
+            "type": "python",
+            "request": "launch",
+            "program": "main_futu.py",
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart",
+            "args" : [
+                    // "--name", "bwv12" ,
+                    // "--resume_all",
+                    // "--eval"
+                ],
+            "env": {
+                "PYTHONPATH":"${PYTHONPATH}"
+            }
+        },
+        {
+            "name": "Python: Server",
+            "type": "python",
+            "request": "launch",
+            "program": "server/app.py",
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart",
+            "args" : [
+                    // "--name", "bwv12" ,
+                ],
+            "env": {
+                "PYTHONPATH":"${PYTHONPATH}"
+            }
+        },
+        {
+            "name": "Python: debug file",
+            "type": "python",
+            "request": "launch",
+            "program": "debug.py",
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart",
+            "args" : [
+                    // "--name", "bwv12" ,
+                    // "--resume_all",
+                    // "--eval"
+                ],
+            "env": {
+                "PYTHONPATH":"${PYTHONPATH}"
+            }
+        },
+    ]
+}
