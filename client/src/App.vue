@@ -3,17 +3,21 @@
     <img alt="Vue logo" src="./assets/logo.png">
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <Charts />
+    <p>Hello</p>
+    <TickTable />
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 import Charts from './components/Charts'
+import TickTable from './components/TickTable'
 
 export default {
   name: 'App',
   components: {
-    Charts
+    Charts,
+    TickTable,
   }
 }
 </script>
