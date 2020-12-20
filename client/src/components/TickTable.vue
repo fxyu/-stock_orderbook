@@ -1,35 +1,22 @@
 <template>
   <div class="m-0 p-0">
-        <div class="m-0 p-0" 
-            style="border:1px solid; overflow-y: scroll; height: 200px">
-            <div id="row_tempalte" class="row m-0 p-0">
-                <div class="col-4">
-                    Time
-                </div>
-                <div class="col-4">
-                    Price
-                </div>
-                <div class="col-4">
-                    Volumn
-                </div>
-            </div>
-            <!-- For loop the entry -->
-            <TickTableEntry/>
-        </div>
-    </div>
+    <b-table hover :items="tickItems"></b-table>
+  </div>
 </template>
 
 <script>
-import TickTableEntry from './TickTableEntry'
+import store from '../store'
 
 export default {
-    name: 'TickTable',
-    components: {
-        TickTableEntry
-    }
-}
+  name: "TickTable",
+  components: {
+  },
+  props: ['tickItems'],
+  data() {
+    return {
+    };
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,24 +1,21 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <Charts />
-    <p>Hello</p>
-    <TickTable />
+    <Page1 />
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import Charts from './components/Charts'
-import TickTable from './components/TickTable'
+import Page1 from './components/Page1'
+
 
 export default {
   name: 'App',
   components: {
-    Charts,
-    TickTable,
-  }
+    Page1,
+  },
 }
 </script>
 

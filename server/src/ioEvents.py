@@ -41,6 +41,31 @@ def socketIOEvents(socketio):
 
         return []
 
+    @socket.on('clent_get_1m_kdata')
+    def client_get_1m_kdata(code):
+        if GlobalHandler.quote_ctx == None:
+            print('No quote_ctx')
+            return []
+
+        code = 'HK.HSImain'
+        ret, data = quote_ctx.get_cur_kline(code, 100, ft.SubType.K_1M, ft.AuType.QFQ) 
+        if ret == ft.RET_OK:
+            print(data)
+            print(data['turnover_rate'][0])   # 取第一条的换手率
+            print(data['turnover_rate'].values.tolist())   # 转为list
+
+        #        code             time_key   open  close   high    low    volume      turnover  pe_ratio  turnover_rate  last_close
+        # 0  HK.00700  2020-03-27 00:00:00  390.0  382.4  390.0  381.8  28738698  1.103966e+10    35.466        0.00301       381.8
+        # 1  HK.00700  2020-03-30 00:00:00  371.8  376.6  380.0  371.6  21838731  8.188543e+09    34.928        0.00229       382.4
+        # 0.00301
+        # [0.00301, 0.00229]
+        else:
+            print('error:', data)
+        else:
+            print(data)
+
+        return []
+
 #======= webDict EVENT ==============
     # @socketio.on('client_searchWord')
     # def searchWord(word):

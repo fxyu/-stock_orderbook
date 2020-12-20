@@ -12,6 +12,15 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Python: Attach",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+              "host": "localhost",
+              "port": 5678
+            }
+          }
+        {
             "name": "Python: Futu Main",
             "type": "python",
             "request": "launch",
@@ -31,14 +40,17 @@
             "name": "Python: Server",
             "type": "python",
             "request": "launch",
-            "program": "server/app.py",
+            "program": "app.py",
             "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart",
             "args" : [
-                    // "--name", "bwv12" ,
+
                 ],
+            "gevent": true,    
+            "cwd": "/Users/felix/Project/stock_orderbook/server",
             "env": {
-                "PYTHONPATH":"${PYTHONPATH}"
+                "PYTHONPATH":"${PYTHONPATH}",
+                "FLASK_APP": "server/app.py"
             }
         },
         {

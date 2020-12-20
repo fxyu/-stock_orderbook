@@ -3,6 +3,9 @@ import numpy as np
 
 from .globalHandler import GlobalHandler
 
+import eventlet
+eventlet.monkey_patch(thread=False)
+
 class TickerTest(ft.TickerHandlerBase):
     def on_recv_rsp(self, rsp_str):
         ret_code, data = super(TickerTest,self).on_recv_rsp(rsp_str)
@@ -76,6 +79,17 @@ class BrokerTest(ft.BrokerHandlerBase):
         print("BrokerTest: stock: {} data: {} ".format(err_or_stock_code, data))  # BrokerTest自己的处理逻辑
         return ft.RET_OK, data
 
+
+class StockQuoteTest(ft.StockQuoteHandlerBase):
+    def on_recv_rsp(self, rsp_str):
+        ret_code, data = super(StockQuoteTest,self).on_recv_rsp(rsp_str)
+        if ret_code != ft.RET_OK:
+            print("StockQuoteTest: error, msg: %s" % data)
+            return RET_ERROR, data
+        print("StockQuoteTest ", data) # StockQuoteTest自己的处理逻辑
+        return ft.RET_OK, data
+
+# class StockQQQ(ft.HandlerBase)
 
 """
 a = {

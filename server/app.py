@@ -9,10 +9,15 @@ from src.globalHandler import GlobalHandler
 import signal
 import sys
 
+# import eventlet
+# eventlet.monkey_patch()
+
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config['SECRET_KEY'] = 'ThisIsAVerySecretStringThatIWillNotBeAbleToDecrypt!'
-socketio = SocketIO(app, async_mode='threading')
+socketio = SocketIO(app, async_mode='threading', cors_allowed_origins='*')
 socketIOEvents(socketio)
 GlobalHandler.socketio = socketio
 
@@ -33,19 +38,23 @@ def test():
 @app.route('/stop', methods=['GET'])
 def stopServer():
     global quote_ctx
-    quote_ctx.stop()
-    quote_ctx.close()
+    if quote_ctx is not None:
+        quote_ctx.stop()
+        quote_ctx.close()
     return "Sent"
 
 @app.route('/start', methods=['GET'])
 def startFutuAPI():
     global quote_ctx
-    quote_ctx = connect_to_ftOPEND()
+    if quote_ctx == None:
+        quote_ctx = connect_to_ftOPEND()
     return "Started"
 
 ## Kill futu api and kill the app
 def signal_handler(sig, frame):
-    quote_ctx.close()
+    global quote_ctx
+    if quote_ctx is not None:
+        quote_ctx.close()
     sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
@@ -55,10 +64,11 @@ if __name__ == "__main__":
     print("Start Server!")
     socketio.run(app, host="0.0.0.0", \
         debug=True,
+        # cors_allowed_origins="*",
         port=5005)
+    print('End')
     
     
-
 # @app.route('/search/<word>', methods=['GET'])
 # def search(word):
 #     print('Search from get method (word : {})'.format(word))
