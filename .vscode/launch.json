@@ -19,7 +19,7 @@
               "host": "localhost",
               "port": 5678
             }
-          }
+        },
         {
             "name": "Python: Futu Main",
             "type": "python",
@@ -28,6 +28,11 @@
             "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart",
             "args" : [
+                    "-q",
+                    "-n", "25",
+                    "-p", "MDPAgent",
+                    "-l", "smallGrid"
+
                     // "--name", "bwv12" ,
                     // "--resume_all",
                     // "--eval"
