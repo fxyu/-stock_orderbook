@@ -17,12 +17,23 @@
     <button v-on:click="test">Test</button>
     <button v-on:click="newItemTest">New Item Test</button>
     <button v-on:click="get_history">Get History</button>
+
+    <DraggableDiv ref="pDiv" class="col-12 m-0 p-0">
+      <template slot="header">
+        Chart
+      </template>
+      <template slot="main" >
+        <Charts />
+      </template>
+    </DraggableDiv>  
   </div>  
 </template>
 
 <script>
-import OrderBookCharts from './OrderBookCharts'
-import TickTable from './TickTable'
+import OrderBookCharts from './OrderBookCharts.vue'
+import DraggableDiv from './DraggableDiv.vue'
+import Charts from './Charts.vue'
+import TickTable from './TickTable.vue'
 import { mapState } from 'vuex'
 import axios from 'axios'
 import store from '../store'
@@ -37,6 +48,8 @@ export default {
   components: {
     OrderBookCharts,
     TickTable,
+    Charts,
+    DraggableDiv
   },
   computed: mapState([
     'code',
