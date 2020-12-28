@@ -1,3 +1,6 @@
+# import eventlet
+# eventlet.monkey_patch()
+
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 
@@ -9,8 +12,7 @@ from src.globalHandler import GlobalHandler
 import signal
 import sys
 
-# import eventlet
-# eventlet.monkey_patch()
+
 
 from flask_cors import CORS
 
@@ -59,8 +61,6 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 if __name__ == "__main__":
-    # import eventlet
-    # eventlet.monkey_patch()
     print("Start Server!")
     socketio.run(app, host="0.0.0.0", \
         debug=True,

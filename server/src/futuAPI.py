@@ -1,5 +1,5 @@
 import futu as ft
-from .futuHandlers import TickerTest, OrderBookTest, BrokerTest, StockQuoteTest
+from .futuHandlers import TickerTest, OrderBookTest, BrokerTest, StockQuoteTest, CurKlineTest
 from .globalHandler import GlobalHandler
 
 
@@ -13,9 +13,10 @@ def connect_to_ftOPEND():
     quote_ctx.set_handler(TickerTest())
     quote_ctx.set_handler(OrderBookTest())
     # quote_ctx.set_handler(BrokerTest())
-    quote_ctx.set_handler(StockQuoteTest)
+    # quote_ctx.set_handler(StockQuoteTest())
+    quote_ctx.set_handler(CurKlineTest())
     
-    code = 'HK.HSImain'
+    code = ['HK.HSImain']
     ret, err_message = quote_ctx.subscribe(code, [
                                 ft.SubType.QUOTE, 
                                 ft.SubType.ORDER_BOOK, 

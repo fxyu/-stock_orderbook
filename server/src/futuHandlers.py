@@ -1,10 +1,10 @@
+# import eventlet
+# eventlet.monkey_patch()
+
 import futu as ft
 import numpy as np
 
 from .globalHandler import GlobalHandler
-
-import eventlet
-eventlet.monkey_patch(thread=False)
 
 class TickerTest(ft.TickerHandlerBase):
     def on_recv_rsp(self, rsp_str):
@@ -85,11 +85,24 @@ class StockQuoteTest(ft.StockQuoteHandlerBase):
         ret_code, data = super(StockQuoteTest,self).on_recv_rsp(rsp_str)
         if ret_code != ft.RET_OK:
             print("StockQuoteTest: error, msg: %s" % data)
+
             return RET_ERROR, data
         print("StockQuoteTest ", data) # StockQuoteTest自己的处理逻辑
         return ft.RET_OK, data
 
+
 # class StockQQQ(ft.HandlerBase)
+
+class CurKlineTest(ft.CurKlineHandlerBase):
+    def on_recv_rsp(self, rsp_str):
+        ret_code, data = super(CurKlineTest,self).on_recv_rsp(rsp_str)
+        if ret_code != ft.RET_OK:
+            print("CurKlineTest: error, msg: %s" % data)
+            return RET_ERROR, data
+        GlobalHandler.emit_on_socket('server_newkline', data.to_json(orient="records"))
+        # print("CurKlineTest ", data) # CurKlineTest自己的处理逻辑
+        return ft.RET_OK, data
+
 
 """
 a = {
@@ -159,13 +172,6 @@ a = {
 #         [26416.0, 0], 
 #         [26417.0, 0], 
 #         [26418.0, 0]], 
-
-
-
-
-
-
-
 
 
 # 'Ask': [[26406.0, 0], 

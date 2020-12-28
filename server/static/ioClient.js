@@ -145,4 +145,12 @@ $(document).ready(function () {
             console.log(result)
         }});        
     })
+
+    $("#client_event_submit").click(function(){
+        eventName = $('#client_event_name').val()
+        console.log(eventName)
+        socket.emit(eventName,null,function(data){
+            console.log(data)
+        })
+    })
 }); 

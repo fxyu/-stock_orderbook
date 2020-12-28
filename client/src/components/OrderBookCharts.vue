@@ -57,7 +57,7 @@ export default {
                 },
                 y: {
                     min : 0,
-                    max : 30,
+                    max : 2000000,
                     padding: {top:0, bottom:0}
                 }
 

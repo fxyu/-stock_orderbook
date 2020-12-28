@@ -2,6 +2,7 @@
     <!-- TradingVueJs 101 (example from 'Getting Started' ) -->
     <trading-vue :data="chart" :width="this.width" :height="this.height"
         :overlays="overlays"
+        :timezone="parseInt(8)"
         :color-back="colors.colorBack"
         :color-grid="colors.colorGrid"
         :color-text="colors.colorText">
@@ -10,18 +11,22 @@
 
 <script>
 import TradingVue from 'trading-vue-js'
-import Data from '../data/data.json'
 import PerfectTrades from './overlay/PerfectTrades.js'
-import Grin from './overlay/Grin.js'
+// import Grin from './overlay/Grin.js'
 
 export default {
     name: 'Chart',
     components: { TradingVue },
     props : ['divWidth'],
+    computed: {
+        chart () {
+            return this.$store.state.chart
+        }
+    },
     methods: {
         onResize(event) {
             this.width = window.innerWidth
-            this.height = window.innerHeight
+            this.height = window.innerHeight-50
         }
     },
     mounted() {
@@ -35,15 +40,17 @@ export default {
     },
     data() {
         return {
-            chart: Data,
+            // chart: Data,
             width: window.innerWidth,
-            height: window.innerHeight,
+            height: window.innerHeight-50,
             colors: {
                 colorBack: '#fff',
                 colorGrid: '#eee',
                 colorText: '#333',
             },
-            overlays: [PerfectTrades]
+            overlays: [
+                // PerfectTrades
+                ]
         }
     },
     

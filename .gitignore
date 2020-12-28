@@ -147,3 +147,5 @@ results
 !*./results
 __pycache__
 
+server/bower_components
+

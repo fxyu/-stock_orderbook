@@ -12,11 +12,15 @@
       </div>
     </div>
     
-    <button v-on:click="start">Start</button>
-    <button v-on:click="stop">Stop</button>
-    <button v-on:click="test">Test</button>
-    <button v-on:click="newItemTest">New Item Test</button>
-    <button v-on:click="get_history">Get History</button>
+    <div class="container m-0 p-0">
+      <button v-on:click="start">Start</button>
+      <button v-on:click="stop">Stop</button>
+      <button v-on:click="test">Test</button>
+      <button v-on:click="newItemTest">New Item Test</button>
+      <button v-on:click="get_history">Get History</button>
+      <button v-on:click="renew_1mData">Update_new_1m</button>
+      <button v-on:click="get_ob_history">OB history</button>
+    </div>
 
     <DraggableDiv ref="pDiv" class="col-12 m-0 p-0">
       <template slot="header">
@@ -84,10 +88,22 @@ export default {
     },
     get_history : function(event){
       this.$socket.client.emit('client_history',null,function(history){
-          console.log(history)
+          // console.log(history)
           store.commit('add_tick_data',history)
         })
+
+      this.$socket.client.emit('client_get_1m_kdata',null,function(rtn){
+        console.log(rtn)
+      })
     },
+    renew_1mData : function(event){
+      store.commit('renew_1mData',{})
+    },
+    get_ob_history: function(event){
+      this.$socket.client.emit('client_get_ob_history',null,function(rtn){
+        console.log(rtn)
+      })
+    }
   }
 }
 </script>

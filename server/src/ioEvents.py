@@ -5,6 +5,7 @@ from .globalHandler import GlobalHandler
 import futu as ft
 
 import json
+import numpy as np
 
 def socketIOEvents(socketio):
 #====== DEFAULT EVENT ==============
@@ -41,18 +42,20 @@ def socketIOEvents(socketio):
 
         return []
 
-    @socket.on('clent_get_1m_kdata')
+    @socketio.on('client_get_1m_kdata')
     def client_get_1m_kdata(code):
         if GlobalHandler.quote_ctx == None:
             print('No quote_ctx')
             return []
 
         code = 'HK.HSImain'
-        ret, data = quote_ctx.get_cur_kline(code, 100, ft.SubType.K_1M, ft.AuType.QFQ) 
+        ret, data = GlobalHandler.quote_ctx.get_cur_kline(code, 1000, ft.SubType.K_1M, ft.AuType.QFQ) 
         if ret == ft.RET_OK:
-            print(data)
-            print(data['turnover_rate'][0])   # 取第一条的换手率
-            print(data['turnover_rate'].values.tolist())   # 转为list
+            print(f"get current k line of {code}")
+            # print(data)
+            # SERVER_HISTORY1MDATA
+            emit('server_history1mdata', data.to_json(orient="records"))
+            return True
 
         #        code             time_key   open  close   high    low    volume      turnover  pe_ratio  turnover_rate  last_close
         # 0  HK.00700  2020-03-27 00:00:00  390.0  382.4  390.0  381.8  28738698  1.103966e+10    35.466        0.00301       381.8
@@ -61,8 +64,59 @@ def socketIOEvents(socketio):
         # [0.00301, 0.00229]
         else:
             print('error:', data)
-        else:
+
+        return []
+
+    @socketio.on('client_get_ob_history')
+    def client_get_ob_history(code):
+        print("client_get_ob_history received")
+        if GlobalHandler.quote_ctx == None:
+            print('No quote_ctx')
+            return []
+
+        def gen_json_array(data):
+            x_low = data['Bid'][-1][0]
+            x_high= data['Ask'][-1][0]
+            step  = round(abs(data['Bid'][1][0] - data['Bid'][0][0]),2)
+
+            items = {}
+            bid_ask_spread = []
+
+            for price in np.arange(x_low,x_high+step,step):
+                # print(str(price))
+                price = round(price,2)
+                items[str(price)] = {
+                    'price' : price,
+                    'ask' : 0,
+                    'bid' : 0
+                }
+
+            for bid in data['Bid']:
+                items[str(bid[0])]['bid'] = bid[1]
+
+            for ask in data['Ask']:
+                items[str(ask[0])]['ask'] = ask[1]
+
+            for key, val in items.items():
+                bid_ask_spread += [val]
+
+            return bid_ask_spread
+
+        # code = 'HK.HSImain'
+        code = 'HK.00883'
+        ret, data = GlobalHandler.quote_ctx.get_order_book(code, num=10)
+        if ret == ft.RET_OK:
             print(data)
+            spread = gen_json_array(data)
+            json = {
+                'time' : data['svr_recv_time_bid'],
+                'code' : data['code'],
+                'data' : spread
+            }
+            GlobalHandler.emit_on_socket('server_newOrderBookData', json)
+            return True
+        else:
+            print('error:', data)
 
         return []
 
