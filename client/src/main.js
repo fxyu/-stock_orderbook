@@ -10,7 +10,7 @@ import VueSocketIOExt from 'vue-socket.io-extended';
 import io from 'socket.io-client';
 
 // const socket = io('http://socketserver.com:1923');
-const socket = io('http://0.0.0.0:5005/');
+const socket = io('http://localhost:5005/');
 
 Vue.use(VueSocketIOExt, socket, {store});
 

@@ -17,7 +17,7 @@ import sys
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*":{"origins":"*"}})
 app.config['SECRET_KEY'] = 'ThisIsAVerySecretStringThatIWillNotBeAbleToDecrypt!'
 socketio = SocketIO(app, async_mode='threading', cors_allowed_origins='*')
 socketIOEvents(socketio)
@@ -64,7 +64,6 @@ if __name__ == "__main__":
     print("Start Server!")
     socketio.run(app, host="0.0.0.0", \
         debug=True,
-        # cors_allowed_origins="*",
         port=5005)
     print('End')
     

@@ -1,16 +1,28 @@
 <template>
-    <!-- TradingVueJs 101 (example from 'Getting Started' ) -->
-    <trading-vue :data="chart" :width="this.width" :height="this.height"
-        :overlays="overlays"
-        :timezone="parseInt(8)"
-        :color-back="colors.colorBack"
-        :color-grid="colors.colorGrid"
-        :color-text="colors.colorText">
-    </trading-vue>
+    <div class='p-0 m-0'>
+        <!-- <button :v-bind="reset">R</button>
+        <span class="night-mode">
+            <input type="checkbox" v-model="night">
+            <label>NM</label>
+        </span> -->
+        <trading-vue :data="dc" :width="this.width" :height="this.height"
+            title-txt="HK.HSIMain"
+            ref="tvjs"
+            :extensions="ext"
+            :overlays="overlays"
+            :timezone="parseInt(8)"
+            :toolbar="true"
+            :color-back="colors.colorBack"
+            :color-grid="colors.colorGrid"
+            :color-text="colors.colorText">
+        </trading-vue>
+    </div>
 </template>
 
 <script>
 import TradingVue from 'trading-vue-js'
+import XP from 'tvjs-xp'
+import Overlays from 'tvjs-overlays'
 import PerfectTrades from './overlay/PerfectTrades.js'
 // import Grin from './overlay/Grin.js'
 
@@ -19,21 +31,27 @@ export default {
     components: { TradingVue },
     props : ['divWidth'],
     computed: {
-        chart () {
+        dc () {
             return this.$store.state.chart
         }
     },
     methods: {
         onResize(event) {
-            this.width = window.innerWidth
-            this.height = window.innerHeight-50
+            // console.log(this.$parent)
+            // let parent = this.$parent
+            this.width = this.$parent.$refs.chartdiv.clientWidth
+            this.height = this.$parent.$refs.chartdiv.clientHeight
+        },
+        reset(event){
+            this.$refs.tvjs.resetChart()
         }
     },
     mounted() {
         // console.log(this.$ref.pDiv.width)
-        // this.width = this.$ref.pDiv.width
-        // this.height = this.$ref.pDiv.height
+        this.width = this.$parent.$refs.chartdiv.clientWidth
+        this.height = this.$parent.$refs.chartdiv.clientHeight
         window.addEventListener('resize', this.onResize)
+        // console.log(Object.values(Overlays))
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.onResize)
@@ -41,16 +59,16 @@ export default {
     data() {
         return {
             // chart: Data,
-            width: window.innerWidth,
-            height: window.innerHeight-50,
+            width: null,
+            height: null,
             colors: {
                 colorBack: '#fff',
                 colorGrid: '#eee',
                 colorText: '#333',
             },
-            overlays: [
-                // PerfectTrades
-                ]
+            ext: Object.values(XP),
+            overlays: Object.values(Overlays),
+            night: true,
         }
     },
     
@@ -58,5 +76,9 @@ export default {
 </script>
 
 <style>
-
+.night-mode {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 800px; border:1px solid">
+    <div style="width: 100%; height:100%; border:1px solid" ref="mychart">
         <div id="mychart"></div>
     </div>
 </template>
@@ -57,7 +57,7 @@ export default {
                 },
                 y: {
                     min : 0,
-                    max : 2000000,
+                    max : 100,
                     padding: {top:0, bottom:0}
                 }
 
@@ -69,11 +69,17 @@ export default {
             },
             transition: {
                 duration: 30
+            },
+            // onresized: function (){ 
+            //     this.selectChart.style('max-height', 'none')
+            // },
+            size: {
+                height: 400
             }
         });
         
-        // this.$forceUpdate();
-        
+        // this.chart.resize({height: this.$refs.mychart.clientHeight}) 
+        window.addEventListener('resize', this.onResize)  
     },
     watch: {
         'ob': function () {
@@ -121,6 +127,15 @@ export default {
                 }
             });
         }
+    },
+    methods: {
+        onResize(event) {
+            // console.log(this.$refs.mychart.clientHeight)
+            this.chart.resize({height: this.$refs.mychart.clientHeight-10})
+        }
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.onResize)
     }
 }
 </script>
