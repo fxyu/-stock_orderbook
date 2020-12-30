@@ -11,7 +11,7 @@ const manageNewTickData = function(newData){
   let tickItem = {
     'Time': data[0], 
     'Price': data[1], 
-    'Volume': data[2]
+    'Volume': data[2],
   }
   return tickItem
 }
@@ -24,6 +24,7 @@ const vuex_store = {
     chart : new DataCube(Data),
     code : 'HK.HSIMain',
     last_update : 'Updating',
+    stock_quote : {},
   },
   mutations: {
     SOCKET_SERVER_NEWORDERBOOKDATA(state, newData) {
@@ -58,6 +59,12 @@ const vuex_store = {
           +moment(e.time_key), e.open, e.high, e.low, e.close, e.volume]
       });
       state.chart.merge('chart.data', processed)
+    },
+    // Stock Quote Data
+    SOCKET_SERVER_STOCK_QUOTE(state, newData){
+      let quote_data = JSON.parse(newData)[0]
+      state.stock_quote = quote_data
+      // console.log(quote_data)
     },
 
 

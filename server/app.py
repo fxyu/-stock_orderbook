@@ -1,7 +1,11 @@
-# import eventlet
-# eventlet.monkey_patch()
+ASYNC_MODE = 'eventlet'
+# ASYNC_MODE = 'treading'
 
-from flask import Flask, render_template
+if ASYNC_MODE == 'eventlet':
+    import eventlet
+    eventlet.monkey_patch()
+
+from flask import Flask, render_template, send_from_directory
 from flask_socketio import SocketIO, send, emit
 
 from src.ioEvents import socketIOEvents
@@ -11,15 +15,16 @@ from src.globalHandler import GlobalHandler
 
 import signal
 import sys
+import os
 
 
 
 from flask_cors import CORS
-
-app = Flask(__name__)
+print(os.path.abspath('./static'))
+app = Flask(__name__, static_folder=os.path.abspath('./static/'), template_folder='./templates')
 CORS(app, resources={r"/*":{"origins":"*"}})
 app.config['SECRET_KEY'] = 'ThisIsAVerySecretStringThatIWillNotBeAbleToDecrypt!'
-socketio = SocketIO(app, async_mode='threading', cors_allowed_origins='*')
+socketio = SocketIO(app, async_mode=ASYNC_MODE, cors_allowed_origins='*')
 socketIOEvents(socketio)
 GlobalHandler.socketio = socketio
 
@@ -30,6 +35,15 @@ quote_ctx = None
 @app.route('/index')
 def index():
     return render_template('index.html')
+    # return send_from_directory('static', 'index.html')
+
+@app.route('/js/<path:filename>')
+def serve_static_js(filename):
+    return send_from_directory(os.path.join(os.path.abspath('./static/'), 'js'), filename)
+
+@app.route('/css/<path:filename>')
+def serve_static_css(filename):
+    return send_from_directory(os.path.join(os.path.abspath('./static/'), 'css'), filename)
 
 @app.route('/test', methods=['GET'])
 def test():

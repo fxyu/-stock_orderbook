@@ -118,7 +118,7 @@ export default {
             // }
 
             // ob = tmp1.concat(ob).concat(tmp2)
-
+            // console.log(this.ob)
             this.chart.load({
                 json: this.ob,
                 keys: {

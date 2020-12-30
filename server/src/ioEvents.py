@@ -120,6 +120,24 @@ def socketIOEvents(socketio):
 
         return []
 
+    @socketio.on('client_get_stock_quote')
+    def client_get_1m_kdata(code):
+        if GlobalHandler.quote_ctx == None:
+            print('No quote_ctx')
+            return {"code": "err", "msg": "server no quote_ctx"}
+
+        code = 'HK.HSImain'
+        ret, data = GlobalHandler.quote_ctx.get_stock_quote(code) 
+
+        if ret != ft.RET_OK:
+            print('error:', data)
+            return {"code": "err", "msg": data}
+
+        print(data)
+        print(f"[SUCCESS] Get stock quote of {code}")
+        emit('server_stock_quote', data.to_json(orient="records"))
+        return {"code": "ok", "msg": "success"}
+
 #======= webDict EVENT ==============
     # @socketio.on('client_searchWord')
     # def searchWord(word):

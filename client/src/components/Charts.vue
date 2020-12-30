@@ -37,8 +37,6 @@ export default {
     },
     methods: {
         onResize(event) {
-            // console.log(this.$parent)
-            // let parent = this.$parent
             this.width = this.$parent.$refs.chartdiv.clientWidth
             this.height = this.$parent.$refs.chartdiv.clientHeight
         },
@@ -51,7 +49,6 @@ export default {
         this.width = this.$parent.$refs.chartdiv.clientWidth
         this.height = this.$parent.$refs.chartdiv.clientHeight
         window.addEventListener('resize', this.onResize)
-        // console.log(Object.values(Overlays))
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.onResize)
