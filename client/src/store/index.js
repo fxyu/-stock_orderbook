@@ -29,8 +29,40 @@ const vuex_store = {
   mutations: {
     SOCKET_SERVER_NEWORDERBOOKDATA(state, newData) {
       // console.log('new Data from "server_newOrderBookData" event')
-      // console.log(newData)
-      state.ob = newData.data
+      console.log(newData)
+
+      let ob = []
+
+      let step = parseFloat( Math.abs(newData.Ask[1][0] - newData.Ask[0][0]).toFixed(2) )
+      let ask = newData.Ask
+      let bid = newData.Bid.reverse()
+
+      // Empty 20
+      let start = bid[0][0] - (10*step)
+      for (let n = start; n < ask[0][0]; n+=step) {
+        ob.push([n.toFixed(2), 0, null])
+      }
+      // Bid
+      for (let n = 0; n < bid.length; n++){
+        ob.push(bid[n])
+      }
+      // Spread
+      for (let n = bid[bid.length-1][0]; n < ask[0][0]; n+=step){
+        ob.push([n, 0, null])
+      }
+      // Ask
+      for (let n = 0; n < ask.length; n++){
+        ob.push(ask[n])
+      }
+      // Rest
+      let trailing = ob[ob.length-1][0] + step
+      for (let n = 40-ob.length; n > 0; n--) {
+        ob.push([trailing.toFixed(2), 0, null])
+        trailing += step
+      }
+
+      console.log(ob)
+      state.ob = ob
     },
     SOCKET_SERVER_TEST(state){
       console.log('Test from server')

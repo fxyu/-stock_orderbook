@@ -74,33 +74,33 @@ def socketIOEvents(socketio):
             print('No quote_ctx')
             return []
 
-        def gen_json_array(data):
-            x_low = data['Bid'][-1][0]
-            x_high= data['Ask'][-1][0]
-            step  = round(abs(data['Bid'][1][0] - data['Bid'][0][0]),2)
+        # def gen_json_array(data):
+        #     x_low = data['Bid'][-1][0]
+        #     x_high= data['Ask'][-1][0]
+        #     step  = round(abs(data['Bid'][1][0] - data['Bid'][0][0]),2)
 
-            items = {}
-            bid_ask_spread = []
+        #     items = {}
+        #     bid_ask_spread = []
 
-            for price in np.arange(x_low,x_high+step,step):
-                # print(str(price))
-                price = round(price,2)
-                items[str(price)] = {
-                    'price' : price,
-                    'ask' : 0,
-                    'bid' : 0
-                }
+        #     for price in np.arange(x_low,x_high+step,step):
+        #         # print(str(price))
+        #         price = round(price,2)
+        #         items[str(price)] = {
+        #             'price' : price,
+        #             'ask' : 0,
+        #             'bid' : 0
+        #         }
 
-            for bid in data['Bid']:
-                items[str(bid[0])]['bid'] = bid[1]
+        #     for bid in data['Bid']:
+        #         items[str(bid[0])]['bid'] = bid[1]
 
-            for ask in data['Ask']:
-                items[str(ask[0])]['ask'] = ask[1]
+        #     for ask in data['Ask']:
+        #         items[str(ask[0])]['ask'] = ask[1]
 
-            for key, val in items.items():
-                bid_ask_spread += [val]
+        #     for key, val in items.items():
+        #         bid_ask_spread += [val]
 
-            return bid_ask_spread
+        #     return bid_ask_spread
 
         # code = 'HK.HSImain'
         code = 'HK.00883'
@@ -119,6 +119,12 @@ def socketIOEvents(socketio):
             print('error:', data)
 
         return []
+
+    @socketio.on('client_get_ob_history_test')
+    def client_get_ob_history_test(code):
+        data = {'code': 'HK.00700', 'svr_recv_time_bid': '', 'svr_recv_time_ask': '', 'Bid': [(384.2, 15400, 6, {}), (384.0, 3700, 7, {}), (383.8, 6600, 10, {})], 'Ask': [(384.4, 3000, 9, {}), (384.6, 25800, 23, {}), (384.8, 19100, 27, {})]}
+        GlobalHandler.emit_on_socket('server_newOrderBookData', data)
+        return {"code": "ok", "msg": "success"}
 
     @socketio.on('client_get_stock_quote')
     def client_get_1m_kdata(code):

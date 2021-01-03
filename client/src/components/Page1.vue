@@ -1,79 +1,73 @@
 <template>
-  <div class="container-fluid vh-100 my-font-family">
-    <div class="row pb-2 m-0" 
-         style="background-color: rgba(0,0,255,.1)">
-      <div class="col-12">
-        <StockQuote/>
-      </div>
-    </div>
-    
-    <div class="row p-0 m-0">
+	<div class="container-fluid vh-100 my-font-family">
+		<b-sidebar id="sidebar-1" title="Sidebar" right shadow>
+			<b-list-group class="m-2">
+				<b-list-group-item button v-on:click="start">Start</b-list-group-item>
+				<b-list-group-item button v-on:click="stop">Stop</b-list-group-item>
+				<b-list-group-item button v-on:click="test">Test</b-list-group-item>
+				<b-list-group-item button v-on:click="newItemTest">New Item Test</b-list-group-item>
+				<b-list-group-item button v-on:click="get_history">Get History</b-list-group-item>
+				<b-list-group-item button v-on:click="renew_1mData">Update new 1m</b-list-group-item>
+				<b-list-group-item button v-on:click="get_ob_history">OB history</b-list-group-item>
+				<b-list-group-item button v-on:click="get_stock_quote">Stock Quote</b-list-group-item>
+			</b-list-group>
+		</b-sidebar>
 
-      <div class="col-2 order-6">
+		<div class="row pb-2 m-0" 
+			style="background-color: rgba(0,0,255,.1)">
+			<div class="col-12">
+				<StockQuote/>
+			</div>
+		</div>
+		
+		<b-button v-b-toggle.sidebar-1>Toggle Sidebar</b-button>
 
-        <b-list-group class="m-2">
-          <b-list-group-item button v-on:click="start">Start</b-list-group-item>
-          <b-list-group-item button v-on:click="stop">Stop</b-list-group-item>
-          <b-list-group-item button v-on:click="test">Test</b-list-group-item>
-          <b-list-group-item button v-on:click="newItemTest">New Item Test</b-list-group-item>
-          <b-list-group-item button v-on:click="get_history">Get History</b-list-group-item>
-          <b-list-group-item button v-on:click="renew_1mData">Update new 1m</b-list-group-item>
-          <b-list-group-item button v-on:click="get_ob_history">OB history</b-list-group-item>
-          <b-list-group-item button v-on:click="get_stock_quote">Stock Quote</b-list-group-item>
-        </b-list-group>
+		<div class="row col-12 p-2 m-0">
+			<!-- <OrderBookCharts />j -->
+			<OrderBookTable />
+		</div>
 
-      </div>
+		<div class="row p-2 m-0">
+			<div class="h-100 col-12 p-0 m-0">
+				<div class="row p-0 m-0">
+				<TickTableV2 
+					v-bind:tickItems="tickData" 
+					v-bind:title="volume_text"
+					class="col-sm-5 col-lg-4"/>
+				<TickTableV2 
+					v-bind:tickItems="tickData_large" 
+					v-bind:title="volume_large_text"
+					class="col-sm-5 col-lg-4"/>
+				</div>
+			</div>
+		
+			<!-- <div ref="chartdiv" class="h-100 col-6 p-0 m-0">
+				<Charts/>
+			</div> -->
+			
+		</div>
+
+		<div class="row col-10" style="height: 500px">
+			<div ref="chartdiv" class="h-100 col-12 p-0 m-0">
+				<Charts/>
+			</div>
+		</div>
 
 
-      <div class="col-9 p-0 m-0">
-
-        <div class="row col-12 p-2 m-0">
-          <OrderBookCharts />
-        </div>
-
-        <div class="row p-2 m-0">
-          <div class="h-100 col-6 p-0 m-0">
-            <div class="row p-0 m-0">
-              <TickTableV2 
-                v-bind:tickItems="tickData" 
-                v-bind:title="volume_text"
-                class="col-6"/>
-              <TickTableV2 
-                v-bind:tickItems="tickData_large" 
-                v-bind:title="volume_large_text"
-                class="col-6"/>
-            </div>
-          </div>
-          
-          <!-- <div ref="chartdiv" class="h-100 col-6 p-0 m-0">
-            <Charts/>
-          </div> -->
-          
-        </div>
-
-        <div class="row" style="height: 500px">
-          <div ref="chartdiv" class="h-100 col-12 p-0 m-0">
-            <Charts/>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-    <DraggableDiv ref="pDiv" class="col-12 m-0 p-0" style="display: None">
-      <template slot="header">
-        Chart
-      </template>
-      <template slot="main" >
-        
-      </template>
-    </DraggableDiv>  
-  </div>  
+		<DraggableDiv ref="pDiv" class="col-12 m-0 p-0" style="display: None">
+		<template slot="header">
+			Chart
+		</template>
+		<template slot="main" >
+			
+		</template>
+		</DraggableDiv>  
+	</div>  
 </template>
 
 <script>
 import OrderBookCharts from './OrderBookCharts.vue'
+import OrderBookTable from './OrderBookTable.vue'
 import DraggableDiv from './DraggableDiv.vue'
 import Charts from './Charts.vue'
 import TickTable from './TickTable.vue'
@@ -100,7 +94,8 @@ export default {
   name: 'App',
   components: {
     StockQuote,
-    OrderBookCharts,
+    // OrderBookCharts,
+    OrderBookTable,
     // TickTable,
     Charts,
     DraggableDiv,
@@ -146,11 +141,11 @@ export default {
       store.commit('renew_1mData',{})
     },
     get_ob_history: function(event){
-      this.$socket.client.emit('client_get_ob_history',null,(msg)=>console.log(msg))
+      this.$socket.client.emit('client_get_ob_history_test',null,(msg)=>console.log(msg))
     },
     get_stock_quote: function(event){
       this.$socket.client.emit('client_get_stock_quote',null,(msg)=>console.log(msg))
-    }
+	},
   },
   data(){ 
     return {

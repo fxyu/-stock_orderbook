@@ -11,7 +11,7 @@ def connect_to_ftOPEND():
     
     quote_ctx.start()
     quote_ctx.set_handler(TickerTest())
-    quote_ctx.set_handler(OrderBookTest())
+    # quote_ctx.set_handler(OrderBookTest())
     # quote_ctx.set_handler(BrokerTest())
     # quote_ctx.set_handler(StockQuoteTest())
     quote_ctx.set_handler(CurKlineTest())
