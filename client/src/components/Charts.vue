@@ -29,11 +29,11 @@ import PerfectTrades from './overlay/PerfectTrades.js'
 export default {
     name: 'Chart',
     components: { TradingVue },
-    props : ['divWidth'],
+    props : ['divWidth', 'dc'],
     computed: {
-        dc () {
-            return this.$store.state.chart
-        }
+        // dc () {
+        //     return this.$store.state.chart
+        // }
     },
     methods: {
         onResize(event) {

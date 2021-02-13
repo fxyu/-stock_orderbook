@@ -1,4 +1,4 @@
-<template>
+<template class="my-default">
 	<div class="container-fluid vh-100 my-font-family">
 		<b-sidebar id="sidebar-1" title="Sidebar" right shadow>
 			<b-list-group class="m-2">
@@ -48,7 +48,7 @@
 		</div>
 
 		<div class="row col-10" style="height: 500px">
-			<div ref="chartdiv" class="h-100 col-12 p-0 m-0">
+			<div ref="chartdiv" class="h-z100 col-12 p-0 m-0">
 				<Charts/>
 			</div>
 		</div>
@@ -66,13 +66,13 @@
 </template>
 
 <script>
-import OrderBookCharts from './OrderBookCharts.vue'
-import OrderBookTable from './OrderBookTable.vue'
-import DraggableDiv from './DraggableDiv.vue'
-import Charts from './Charts.vue'
-import TickTable from './TickTable.vue'
-import TickTableV2 from './TickTableGrid.vue'
-import StockQuote from './StockQuote.vue'
+import OrderBookCharts from '../components/OrderBookCharts.vue'
+import OrderBookTable from '../components/OrderBookTable.vue'
+import DraggableDiv from '../components/DraggableDiv.vue'
+import Charts from '../components/Charts.vue'
+import TickTable from '../components/TickTable.vue'
+import TickTableV2 from '../components/TickTableGrid.vue'
+import StockQuote from '../components/StockQuote.vue'
 import { mapState } from 'vuex'
 import axios from 'axios'
 import store from '../store'
@@ -161,7 +161,18 @@ export default {
     font-family: 微軟正黑體修正,微軟正黑體修正2,微軟正黑體,'Microsoft JhengHei',Arial;
   }
 
+  .my-default{
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* text-align: center; */
+    color: #2c3e50;
+    margin-top: 0px;
+  }
+
   /* html, body {
     height: 100%;
   } */
+
+  @import '../assets/c3.min.css';
 </style>

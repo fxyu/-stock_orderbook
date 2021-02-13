@@ -1,3 +1,4 @@
 {
-    "jupyter.jupyterServerType": "local"
+    "jupyter.jupyterServerType": "local",
+    "python.pythonPath": "/Users/tsangtszyan/miniconda3/envs/py38/bin/python"
 }

@@ -144,6 +144,19 @@ def socketIOEvents(socketio):
         emit('server_stock_quote', data.to_json(orient="records"))
         return {"code": "ok", "msg": "success"}
 
+#======= chart EVENT ================
+    @socketio.on('client_get_1mk_history')
+    def client_get_1mk_history(code):
+        try:
+            # load data from db
+            with open('./db/data.txt') as json_file:
+                data = json.load(json_file)
+                emit('server_1mk_history_ymF', data)
+            return {"code": "ok", "msg": "success"}
+        except:
+            return {"code": "err", "msg": "unknown Error"}
+
+
 #======= webDict EVENT ==============
     # @socketio.on('client_searchWord')
     # def searchWord(word):
@@ -156,6 +169,8 @@ def socketIOEvents(socketio):
     #     print('client getHistory')
     #     x = db.getHistory()
     #     return x
+
+
 
 
 
