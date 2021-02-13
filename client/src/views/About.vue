@@ -37,15 +37,20 @@ export default {
 
     server_1mk_history_ymF(data) {
       // self.dc = new DataCube(Data)
+      let dd = JSON.parse(data)
+      // console.log(dd)
+      console.log(dd[0].Datetime)
+      console.log(dd[1].Datetime)
+      console.log(dd[2].Datetime)
 
       let processed = JSON.parse(data).map(e => {
         // format: [timestamp, open, high, low, close, volume],
         return [
-          moment(e.time_key).valueOf(), e.Open, e.High, e.Low, e.Close, e.Volume]
+          +moment(e.Datetime), e.Open, e.High, e.Low, e.Close, e.Volume]
       });
       
       this.dc.merge('chart.data', processed)
-      console.log(processed)
+      console.log(processed[0])
     }
   },
   name: 'About',
